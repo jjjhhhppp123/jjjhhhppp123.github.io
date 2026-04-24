@@ -1,41 +1,1672 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
+  <title>MC Blueprint — Minecraft 建築藍圖下載站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Inter 正文字體 + Press Start 2P 像素字體（僅 Logo 使用） -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap"
+    rel="stylesheet" />
   <style>
+    /* ═══════════════════════════════════════════
+       CSS 變數（全站色彩、尺寸）
+    ═══════════════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --accent: #16a34a;
+      --accent-light: #22c55e;
+      --accent-dim: rgba(22, 163, 74, 0.10);
+      --accent-ring: rgba(22, 163, 74, 0.22);
+
+      --bg: #fdfbf0;
+      --bg-surface: #f7f3e0;
+      --bg-elevated: #f0eacc;
+      --bg-nav: rgba(253, 251, 240, 0.90);
+
+      --border: rgba(0, 0, 0, 0.08);
+      --border-hard: rgba(0, 0, 0, 0.14);
+
+      --text: #1a1a1a;
+      --text-2: #5a5a4a;
+      --text-3: #a09880;
+
+      --red: #dc2626;
+      --yellow-deep: #d97706;
+
+      --radius-sm: 8px;
+      --radius: 14px;
+      --radius-lg: 20px;
+
+      --nav-h: 60px;
+      --max-w: 960px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', 'Apple Color Emoji', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    /* ─── 通用區塊 wrapper ─── */
+    .section-wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
+    }
+
+    .section-sub {
+      color: var(--text-2);
+      font-size: 0.95rem;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ─── 分隔線 ─── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════
+       導覽列
+    ═══════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      height: var(--nav-h);
+      background: var(--bg-nav);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
       display: flex;
-      justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      background: #1a1a2e;
-      font-family: 'Segoe UI', sans-serif;
+      justify-content: space-between;
+      padding: 0 2rem;
     }
-    .container {
+
+    .nav-logo {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-logo .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      /* 方形小像素格 */
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent-light);
+    }
+
+    /* 桌面導覽連結 */
+    .nav-links {
+      display: flex;
+      gap: 0.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      display: block;
+      color: var(--text-2);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.4rem 0.7rem;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-links a .en {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .nav-links a .zh {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--text-3);
+      margin-top: 1px;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* 漢堡選單按鈕（手機） */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+
+    /* 手機選單展開狀態 */
+    .nav-links.open {
+      display: flex !important;
+      flex-direction: column;
+      position: absolute;
+      top: var(--nav-h);
+      left: 0;
+      right: 0;
+      background: var(--bg-nav);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.25rem 1rem;
+      gap: 0.15rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       #home — Hero Banner
+    ═══════════════════════════════════════════ */
+    #home {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      color: #eee;
+      padding: calc(var(--nav-h) + 4rem) 1.5rem 5rem;
+      position: relative;
+      overflow: hidden;
     }
-    h1 {
-      font-size: 4rem;
-      margin: 0;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+
+    /* 底部 Minecraft 草地像素裝飾 */
+    #home::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: repeating-linear-gradient(90deg,
+          var(--accent) 0px, var(--accent) 16px,
+          var(--accent-light) 16px, var(--accent-light) 20px,
+          #15803d 20px, #15803d 32px,
+          var(--accent) 32px, var(--accent) 48px);
+      opacity: 0.55;
     }
-    p {
-      font-size: 1.2rem;
-      color: #aaa;
-      margin-top: 1rem;
+
+    .hero-inner {
+      position: relative;
+      max-width: 640px;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(22, 163, 74, 0.22);
+      border-radius: 999px;
+      padding: 0.3rem 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      line-height: 1.05;
+      color: var(--text);
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      color: var(--text-2);
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 2.25rem;
+    }
+
+    /* CTA 按鈕群 */
+    .cta-group {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: opacity 0.15s, transform 0.12s, background 0.15s, border-color 0.15s;
+      letter-spacing: -0.01em;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 2px 0 #0f7a35;
+      /* 像素感底影 */
+    }
+
+    .btn-primary:hover {
+      opacity: 0.88;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-2);
+      border-color: var(--border-hard);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-elevated);
+      color: var(--text);
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-red {
+      background: var(--red);
+      color: #fff;
+      border-color: var(--red);
+      box-shadow: 0 2px 0 #991b1b;
+    }
+
+    .btn-red:hover {
+      opacity: 0.88;
+    }
+
+    .btn-worldedit {
+      background: var(--yellow-deep);
+      color: #fff;
+      border-color: var(--yellow-deep);
+      box-shadow: 0 2px 0 #92400e;
+    }
+
+    .btn-worldedit:hover {
+      opacity: 0.88;
+    }
+
+    /* ═══════════════════════════════════════════
+       各區塊漸層背景（每塊不同色調）
+    ═══════════════════════════════════════════ */
+
+    /* Home：暖奶油 + 頂部綠輝 */
+    #home {
+      background:
+        radial-gradient(ellipse 80% 55% at 50% -5%, rgba(22, 163, 74, 0.10) 0%, transparent 65%),
+        linear-gradient(175deg, #fefdf5 0%, #fdfbf0 55%, #f9f5e7 100%);
+    }
+
+    /* About（含作品預覽）：薄荷綠調 */
+    #about {
+      background: linear-gradient(160deg, #edfbf1 0%, #f4faf5 35%, #fdfbf0 100%);
+    }
+
+    /* Download：暖琥珀調 */
+    #download {
+      background: linear-gradient(160deg, #fffbeb 0%, #fef8e3 40%, #fdfbf0 100%);
+    }
+
+    /* Guide：深色保持不變（在 guide 區塊 CSS 處理） */
+
+    /* ─── 迷你作品預覽（在 About 內） ─── */
+    .mini-gallery-wrap {
+      margin-top: 2.5rem;
+    }
+
+    .mini-gallery-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .mini-gallery-header h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .mini-gallery-header a {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .mini-gallery-header a:hover {
+      text-decoration: underline;
+    }
+
+    .mini-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: var(--border-hard);
+      border: 1.5px solid var(--border-hard);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .mini-item {
+      aspect-ratio: 4 / 3;
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .mini-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .mini-item:hover img {
+      transform: scale(1.08);
+    }
+
+    .mini-item img.broken {
+      display: none;
+    }
+
+    .mini-caption {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.22s;
+      display: flex;
+      align-items: flex-end;
+      padding: 0.5rem;
+    }
+
+    .mini-item:hover .mini-caption {
+      opacity: 1;
+    }
+
+    .mini-caption span {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    @media (max-width: 680px) {
+      .mini-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       #download — 下載區
+    ═══════════════════════════════════════════ */
+    /* 搜尋 + 標籤 */
+    .filter-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 0.8rem 1rem 0.8rem 2.75rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hard);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24' stroke='%23a09880' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 0.9rem center;
+    }
+
+    #searchInput:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-ring);
+    }
+
+    #searchInput::placeholder {
+      color: var(--text-3);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag-btn {
+      padding: 0.32rem 0.85rem;
+      border: 1.5px solid var(--border-hard);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-2);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+
+    .tag-btn:hover {
+      background: var(--bg-elevated);
+      color: var(--text);
+    }
+
+    .tag-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* 卡片 Grid */
+    #cardGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border-hard);
+      border: 1.5px solid var(--border-hard);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      transition: background 0.18s;
+    }
+
+    .card:hover {
+      background: var(--bg-elevated);
+    }
+
+    .card-img-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-size: 2.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-img-wrap img.broken {
+      display: none;
+    }
+
+    .card-body {
+      padding: 1.1rem 1.25rem 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(22, 163, 74, 0.18);
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      width: fit-content;
+      margin-bottom: 0.1rem;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--text-2);
+      flex: 1;
+      line-height: 1.55;
+    }
+
+    .card-btns {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .card-btn {
+      flex: 1;
+      padding: 0.48rem 0;
+      border: 1.5px solid transparent;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-weight: 600;
+      text-align: center;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .card-btn:active {
+      transform: scale(0.96);
+    }
+
+    .card-btn-dl {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 2px 0 #0f7a35;
+    }
+
+    .card-btn-dl:hover {
+      opacity: 0.86;
+    }
+
+    .card-btn-yt {
+      background: transparent;
+      color: var(--text-2);
+      border-color: var(--border-hard);
+    }
+
+    .card-btn-yt:hover {
+      background: rgba(220, 38, 38, 0.07);
+      border-color: rgba(220, 38, 38, 0.3);
+      color: var(--red);
+    }
+
+    #noResult {
+      display: none;
+      text-align: center;
+      color: var(--text-3);
+      padding: 4rem 0;
+      font-size: 0.9rem;
+      grid-column: 1 / -1;
+      background: var(--bg-surface);
+    }
+
+    /* ═══════════════════════════════════════════
+       #guide — 安裝教學
+    ═══════════════════════════════════════════ */
+    #guide {
+      background: var(--bg-surface);
+    }
+
+    .guide-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border-hard);
+      border: 1.5px solid var(--border-hard);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .guide-step {
+      background: var(--bg);
+      padding: 1.6rem 1.4rem;
+      transition: background 0.18s;
+    }
+
+    .guide-step:hover {
+      background: var(--bg-elevated);
+    }
+
+    .step-num {
+      width: 34px;
+      height: 34px;
+      background: var(--accent-dim);
+      border: 1.5px solid rgba(22, 163, 74, 0.28);
+      color: var(--accent);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .guide-step h3 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.01em;
+    }
+
+    .guide-step h3 .en {
+      display: block;
+    }
+
+    .guide-step h3 .zh {
+      display: block;
+      font-weight: 500;
+      color: var(--text-2);
+      font-size: 0.82rem;
+    }
+
+    .guide-step p {
+      font-size: 0.8rem;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    .guide-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* ═══════════════════════════════════════════
+       #about — 關於我
+    ═══════════════════════════════════════════ */
+    .about-card {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-hard);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 2rem;
+      display: flex;
+      gap: 1.75rem;
+      align-items: flex-start;
+    }
+
+    .avatar-wrap {
+      flex-shrink: 0;
+    }
+
+    .avatar-wrap img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--bg-elevated);
+    }
+
+    .avatar-fallback {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--bg-elevated);
+      border: 3px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .about-text {
+      color: var(--text-2);
+      font-size: 0.92rem;
+      line-height: 1.85;
+    }
+
+    .about-text p {
+      margin-bottom: 0.6rem;
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .about-text .yt-link {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .about-text .yt-link:hover {
+      text-decoration: underline;
+    }
+
+    /* ═══════════════════════════════════════════
+       #guide — WorldEdit 深色遊戲風
+    ═══════════════════════════════════════════ */
+    #guide {
+      background: #111;
+    }
+
+    .guide-dark-wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    /* 簡介區 */
+    .gd-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #22c55e;
+      margin-bottom: 0.5rem;
+    }
+
+    .gd-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: #f5f5f5;
+      margin-bottom: 1rem;
+    }
+
+    .gd-title span {
+      font-size: 0.52em;
+      font-weight: 600;
+      color: #6b7280;
+      display: block;
+      letter-spacing: -0.02em;
+      margin-top: 0.3rem;
+    }
+
+    .gd-desc {
+      color: #9ca3af;
+      font-size: 0.92rem;
+      line-height: 1.75;
+      max-width: 620px;
+    }
+
+    /* Part 區塊 */
+    .gd-part-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .gd-part-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      background: #22c55e;
+      color: #000;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    .gd-badge-use {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    .gd-part-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #e5e7eb;
+      letter-spacing: -0.01em;
+    }
+
+    /* 卡片格 */
+    .gd-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .gd-card {
+      background: #181818;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      transition: background 0.18s;
+    }
+
+    .gd-card:hover {
+      background: #1f1f1f;
+    }
+
+    .gd-num {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      color: #22c55e;
+      flex-shrink: 0;
+      padding-top: 3px;
+      line-height: 1;
+    }
+
+    .gd-card-body {
+      flex: 1;
+    }
+
+    .gd-card-body h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #f5f5f5;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
+    .gd-card-body p {
+      font-size: 0.78rem;
+      color: #9ca3af;
+      line-height: 1.65;
+      margin-bottom: 0.6rem;
+    }
+
+    /* 路徑 / 指令 code block */
+    .gd-code {
+      display: inline-block;
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      background: #0d0d0d;
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      border-radius: 6px;
+      padding: 0.3rem 0.65rem;
+      word-break: break-all;
+    }
+
+    /* 官網連結（卡片內） */
+    .gd-link {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #60a5fa;
+      text-decoration: none;
+      margin-top: 0.15rem;
+      transition: color 0.15s;
+    }
+
+    .gd-link:hover {
+      color: #93c5fd;
+      text-decoration: underline;
+    }
+
+    /* 底部大按鈕 */
+    .gd-footer {
+      text-align: center;
+    }
+
+    .gd-btn-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 2rem;
+      background: #22c55e;
+      color: #000;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 800;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 3px 0 #15803d, 0 6px 20px rgba(34, 197, 94, 0.25);
+      transition: opacity 0.15s, transform 0.12s;
+      letter-spacing: -0.01em;
+    }
+
+    .gd-btn-main:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    .gd-btn-main:active {
+      transform: scale(0.97);
+    }
+
+    @media (max-width: 680px) {
+      .gd-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       Footer
+    ═══════════════════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      max-width: 100%;
+    }
+
+    footer p {
+      color: var(--text-3);
+      font-size: 0.78rem;
+    }
+
+    /* ─── 回到頂部按鈕 ─── */
+    #backToTop {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.9rem;
+      background: var(--bg-elevated);
+      border: 1.5px solid var(--border-hard);
+      border-radius: var(--radius-sm);
+      color: var(--text-2);
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    #backToTop:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* 浮動版（小螢幕固定右下角） */
+    #backToTopFloat {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 150;
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 3px 0 #0f7a35, 0 6px 16px rgba(0, 0, 0, 0.18);
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    #backToTopFloat.visible {
+      display: flex;
+    }
+
+    #backToTopFloat:hover {
+      opacity: 0.88;
+      transform: translateY(-2px);
+    }
+
+    /* ═══════════════════════════════════════════
+       RWD — 手機版
+    ═══════════════════════════════════════════ */
+    @media (max-width: 680px) {
+      .nav-links:not(.open) {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      #cardGrid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .about-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .hero-title {
+        letter-spacing: -0.03em;
+      }
+
+      .cta-group .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .guide-steps {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Hello World!</h1>
-    <p>這是我的第一個 GitHub Pages 網站 🎉</p>
-  </div>
+
+  <!-- ══════════════════════════════════════════
+     導覽列  Navigation
+══════════════════════════════════════════ -->
+  <nav id="mainNav">
+    <div class="nav-logo">
+      <span class="dot"></span>
+      MC Blueprint
+    </div>
+
+    <!-- 桌面 + 手機展開後的連結清單 -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">
+          <span class="en">Home</span><span class="zh">首頁</span>
+        </a></li>
+      <li><a href="#about">
+          <span class="en">About</span><span class="zh">關於</span>
+        </a></li>
+      <li><a href="#download">
+          <span class="en">Download</span><span class="zh">下載</span>
+        </a></li>
+      <li><a href="#guide">
+          <span class="en">Guide</span><span class="zh">教學</span>
+        </a></li>
+    </ul>
+
+    <!-- 手機漢堡按鈕 -->
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════════
+     #home — Hero Banner
+══════════════════════════════════════════ -->
+  <section id="home">
+    <div class="hero-inner">
+      <!-- 【可修改】小標籤 -->
+      <div class="hero-label">Free Minecraft Blueprint · 免費藍圖資源</div>
+
+      <!-- 【可修改】主標題 -->
+      <h1 class="hero-title">
+        Build Your<br><span>Dream World</span><br>
+        <span style="font-size:0.6em; color:var(--text-2); font-weight:700; letter-spacing:-0.02em;">打造你的夢想世界</span>
+      </h1>
+
+      <!-- 【可修改】副標題 -->
+      <p class="hero-desc">
+        Download free .litematic blueprints and build stunning structures in minutes.<br>
+        下載免費 .litematic 藍圖，幾分鐘內蓋出精美建築。
+      </p>
+
+      <!-- CTA 按鈕 -->
+      <div class="cta-group">
+        <a href="#download" class="btn btn-primary">⬇ Browse Downloads · 瀏覽下載</a>
+        <a href="#gallery" class="btn btn-outline">🖼 View Gallery · 查看作品集</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+     #about — 關於我  About
+══════════════════════════════════════════ -->
+  <section id="about">
+    <div class="section-wrap">
+      <div class="section-label">About · 關於</div>
+      <h2 class="section-title">About Me <span style="color:var(--text-2);font-weight:600;">· 關於我</span></h2>
+
+      <div class="about-card">
+        <!-- 頭貼：把 images/avatar.png 放好就會顯示 -->
+        <div class="avatar-wrap">
+          <img src="images/avatar.png" alt="Avatar"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="avatar-fallback" style="display:none;">🧑‍💻</div>
+        </div>
+
+        <div class="about-text">
+          <p>👋 Hi, I'm <strong>MEETTU</strong> — 嗨，我是 <strong>MEETTU</strong>！</p>
+          <p>
+            I'm a Minecraft player who loves interior building aesthetics and enjoys adding elegant design details to
+            every corner.
+            Here I share all my blueprints — feel free to download and use them!<br>
+            我是個喜歡室內建築美觀設計的麥塊玩家，喜歡在角落加入精緻的設計巧思，
+            這裡分享我所有的藍圖，也歡迎大家自由下載使用。
+          </p>
+          <p>
+            If you enjoy this style of building, subscribe to my channel so you don't miss any updates!<br>
+            如果你喜歡這個風格的建築，請訂閱追蹤我的頻道才不會錯過即時的更新～！
+          </p>
+          <p>
+            <!-- 【填入你的 YouTube 頻道連結】把 href="#" 換成你的頻道網址 -->
+            📺 YouTube：<a href="https://www.youtube.com/@MEETU1995" class="yt-link" target="_blank" rel="noopener">@MEETU1995</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- ── 迷你作品預覽（縮小版，完整下載在下方 Download 區） ── -->
+      <!--
+      ══════════════════════════════════════════
+      【如何新增作品集圖片】
+      在 JS 的 galleryData 陣列裡複製一個物件：
+        img   : 圖片路徑 "images/xxx.png"
+        title : 名稱（英文 / 中文）
+        emoji : 沒有圖時的佔位符
+      ══════════════════════════════════════════
+    -->
+      <div class="mini-gallery-wrap">
+        <div class="mini-gallery-header">
+          <h3>My Builds · 我的建築</h3>
+          <a href="#download">View all downloads ↓</a>
+        </div>
+        <div class="mini-gallery-grid" id="galleryGrid">
+          <!-- 由 JS 渲染 -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+     #download — 下載區  Downloads
+══════════════════════════════════════════ -->
+  <section id="download">
+    <div class="section-wrap">
+      <div class="section-label">Downloads · 下載</div>
+      <h2 class="section-title">Blueprint Files <span style="color:var(--text-2);font-weight:600;">· 藍圖檔案</span></h2>
+      <p class="section-sub">
+        Click ⬇ to download directly — no preview page.<br>
+        點擊 ⬇ 直接下載，不會跳轉預覽頁。
+      </p>
+
+      <!-- 搜尋 + 標籤 -->
+      <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="Search blueprints · 搜尋藍圖..." oninput="filterCards()" />
+        <div class="tags" id="tagBar"></div>
+      </div>
+
+      <!-- 卡片 Grid -->
+      <div id="cardGrid">
+        <div id="noResult">No results found · 找不到符合的建築 😢</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+     #guide — WorldEdit 安裝教學
+══════════════════════════════════════════ -->
+  <section id="guide">
+    <div class="guide-dark-wrap">
+
+      <!-- ── 簡介 ── -->
+      <div class="gd-intro">
+        <div class="gd-label">Guide · 教學</div>
+        <h2 class="gd-title">
+          WorldEdit<br>
+          <span>Installation Guide · 安裝教學</span>
+        </h2>
+        <p class="gd-desc">
+          WorldEdit is the most popular building-assist mod for Minecraft — quickly load and paste blueprints with
+          .schem files.<br>
+          WorldEdit 是 Minecraft 最受歡迎的建築輔助模組，可以快速載入並貼上 .schem 藍圖檔案。
+        </p>
+      </div>
+
+      <!-- ── Part 1：安裝步驟 ── -->
+      <div class="gd-part">
+        <div class="gd-part-header">
+          <span class="gd-part-badge">INSTALL</span>
+          <span class="gd-part-title">Installation Steps · 安裝步驟</span>
+        </div>
+        <div class="gd-cards">
+
+          <div class="gd-card">
+            <div class="gd-num">01</div>
+            <div class="gd-card-body">
+              <h3>Download Fabric Loader · 下載 Fabric Loader</h3>
+              <p>Install the Fabric mod loader first.<br>先安裝 Fabric 模組載入器。</p>
+              <a href="https://fabricmc.net/use/installer/" target="_blank" rel="noopener" class="gd-link">
+                🔗 fabricmc.net/use/installer
+              </a>
+            </div>
+          </div>
+
+          <div class="gd-card">
+            <div class="gd-num">02</div>
+            <div class="gd-card-body">
+              <h3>Download Fabric API · 下載 Fabric API</h3>
+              <p>Required library for most Fabric mods.<br>大多數 Fabric 模組需要的基礎函式庫。</p>
+              <a href="https://modrinth.com/mod/fabric-api" target="_blank" rel="noopener" class="gd-link">
+                🔗 modrinth.com/mod/fabric-api
+              </a>
+            </div>
+          </div>
+
+          <div class="gd-card">
+            <div class="gd-num">03</div>
+            <div class="gd-card-body">
+              <h3>Download WorldEdit for Fabric · 下載 WorldEdit</h3>
+              <p>Get the Fabric version of WorldEdit.<br>下載 Fabric 版 WorldEdit。</p>
+              <a href="https://modrinth.com/plugin/worldedit" target="_blank" rel="noopener" class="gd-link">
+                🔗 modrinth.com/plugin/worldedit
+              </a>
+            </div>
+          </div>
+
+          <div class="gd-card">
+            <div class="gd-num">04</div>
+            <div class="gd-card-body">
+              <h3>Place .jar Files · 放入 .jar 檔案</h3>
+              <p>
+                Move all downloaded .jar files into your mods folder, then launch the game.<br>
+                將所有 .jar 檔放入 mods 資料夾後啟動遊戲。
+              </p>
+              <code class="gd-code">.minecraft/mods/</code>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Part 2：使用說明 ── -->
+      <div class="gd-part">
+        <div class="gd-part-header">
+          <span class="gd-part-badge gd-badge-use">USE</span>
+          <span class="gd-part-title">How to Paste a Blueprint · 如何貼上藍圖</span>
+        </div>
+        <div class="gd-cards">
+
+          <div class="gd-card">
+            <div class="gd-num">01</div>
+            <div class="gd-card-body">
+              <h3>Place the .schem File · 放入 .schem 檔案</h3>
+              <p>Put your downloaded .schem file into the schematics folder.<br>將下載的 .schem 檔案放入指定資料夾。</p>
+              <code class="gd-code">.minecraft/config/worldedit/schematics/</code>
+            </div>
+          </div>
+
+          <div class="gd-card">
+            <div class="gd-num">02</div>
+            <div class="gd-card-body">
+              <h3>Load the Schematic · 載入藍圖</h3>
+              <p>In-game, type the command below (replace "filename" with your file's name).<br>進入遊戲後輸入以下指令（替換 filename
+                為檔案名稱）。</p>
+              <code class="gd-code">//schem load filename</code>
+            </div>
+          </div>
+
+          <div class="gd-card">
+            <div class="gd-num">03</div>
+            <div class="gd-card-body">
+              <h3>Paste the Build · 貼上建築</h3>
+              <p>Stand where you want the build to appear, then run:<br>站在想貼上的位置後輸入：</p>
+              <code class="gd-code">//paste</code>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── 官網按鈕 ── -->
+      <div class="gd-footer">
+        <a href="https://enginehub.org/worldedit" target="_blank" rel="noopener" class="gd-btn-main">
+          🌐 WorldEdit Official Site · 前往 WorldEdit 官網查看完整說明
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+     Footer
+══════════════════════════════════════════ -->
+  <footer>
+    <!-- 【可修改】版權文字 -->
+    <p>© 2025 MC Blueprint · Made by [Your Name] · 由 [你的名字] 製作</p>
+    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      ↑ Back to Top · 回到頂部
+    </button>
+  </footer>
+
+  <!-- 浮動回到頂部（手機右下角） -->
+  <button id="backToTopFloat" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+
+  <!-- ══════════════════════════════════════════
+     JavaScript
+══════════════════════════════════════════ -->
+  <script>
+    /* ══════════════════════════════════════════
+       【如何新增藍圖卡片】
+       在 buildData 裡複製一個物件：
+         id       : 不重複的數字
+         titleEn  : 英文名稱
+         titleZh  : 中文名稱
+         descEn   : 英文描述
+         descZh   : 中文描述
+         tag      : 分類（自動產生篩選標籤）
+         img      : 圖片路徑 "images/build_XX.png"
+         emoji    : 無圖時的佔位符
+         download : Google Drive 直接下載連結
+                    格式：https://drive.google.com/uc?export=download&id=YOUR_FILE_ID
+         youtube  : YouTube 影片連結
+       ══════════════════════════════════════════ */
+    const buildData = [
+
+      /* ── 卡片 1 ── */
+      {
+        id: 1,
+        titleEn: "Modern Wooden House",
+        titleZh: "現代木屋",
+        descEn: "Minimalist Nordic cabin — great for early survival. Includes basement storage.",
+        descZh: "簡約北歐風格木屋，適合生存初期。含地下室儲藏空間。",
+        tag: "House · 住宅",
+        img: "images/build_01.png",
+        emoji: "🏡",
+        download: "",   /* 填入 Google Drive 直接下載連結 */
+        youtube: ""
+      },
+
+      /* ── 卡片 2 ── */
+      {
+        id: 2,
+        titleEn: "Auto Wheat Farm",
+        titleZh: "全自動小麥農場",
+        descEn: "Fully automatic redstone harvester — one button collects all wheat.",
+        descZh: "紅石全自動收穫，一鍵即可收小麥，效率超高。",
+        tag: "Farm · 農場",
+        img: "images/build_02.png",
+        emoji: "🌾",
+        download: "",
+        youtube: ""
+      },
+
+      /* ── 卡片 3 ── */
+      {
+        id: 3,
+        titleEn: "Medieval Castle",
+        titleZh: "中世紀城堡",
+        descEn: "Large castle with moat and watchtowers — perfect for RPG servers.",
+        descZh: "附有護城河與箭樓的大型城堡，適合 RPG 伺服器。",
+        tag: "Castle · 城堡",
+        img: "images/build_03.png",
+        emoji: "🏰",
+        download: "",
+        youtube: ""
+      },
+
+      /* ── 在這裡繼續新增卡片 ── */
+
+    ];
+
+    /* ══════════════════════════════════════════
+       【如何新增作品集圖片】
+       galleryData 獨立於 buildData，
+       可以只放截圖，不需要下載連結。
+       ══════════════════════════════════════════ */
+    const galleryData = [
+      { img: "images/build_01.png", title: "Modern Wooden House · 現代木屋", emoji: "🏡" },
+      { img: "images/build_02.png", title: "Auto Wheat Farm · 全自動農場", emoji: "🌾" },
+      { img: "images/build_03.png", title: "Medieval Castle · 中世紀城堡", emoji: "🏰" },
+      /* 繼續新增：{ img: "images/xxx.png", title: "...", emoji: "..." }, */
+    ];
+
+    /* ──────────────────────────────────────
+       Gallery 渲染
+    ────────────────────────────────────── */
+    function renderGallery() {
+      const grid = document.getElementById("galleryGrid");
+      grid.innerHTML = galleryData.map(g => `
+    <div class="mini-item">
+      ${g.img ? `<img src="${g.img}" alt="${g.title}"
+                      onload="this.classList.remove('broken')"
+                      onerror="this.classList.add('broken')">` : ""}
+      <span>${g.emoji}</span>
+      <div class="mini-caption"><span>${g.title}</span></div>
+    </div>`
+      ).join("");
+
+      grid.querySelectorAll(".mini-item img").forEach(img => {
+        const emojiSpan = img.nextElementSibling;
+        img.addEventListener("load", () => { if (emojiSpan) emojiSpan.style.display = "none"; });
+        img.addEventListener("error", () => { if (emojiSpan) emojiSpan.style.display = ""; });
+      });
+    }
+
+    /* ──────────────────────────────────────
+       Download 卡片渲染
+    ────────────────────────────────────── */
+    let activeTag = "All · 全部";
+
+    function buildTagBar() {
+      const tags = ["All · 全部", ...new Set(buildData.map(b => b.tag))];
+      document.getElementById("tagBar").innerHTML = tags.map(t =>
+        `<button class="tag-btn${t === activeTag ? " active" : ""}" onclick="setTag('${t}')">${t}</button>`
+      ).join("");
+    }
+
+    function setTag(tag) {
+      activeTag = tag;
+      buildTagBar();
+      filterCards();
+    }
+
+    function filterCards() {
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+      const filtered = buildData.filter(b => {
+        const matchTag = activeTag === "All · 全部" || b.tag === activeTag;
+        const matchText = !q ||
+          b.titleEn.toLowerCase().includes(q) ||
+          b.titleZh.toLowerCase().includes(q) ||
+          b.descEn.toLowerCase().includes(q) ||
+          b.descZh.toLowerCase().includes(q);
+        return matchTag && matchText;
+      });
+      renderCards(filtered);
+    }
+
+    function renderCards(list) {
+      const grid = document.getElementById("cardGrid");
+      const noResult = document.getElementById("noResult");
+      [...grid.querySelectorAll(".card")].forEach(el => el.remove());
+
+      if (list.length === 0) { noResult.style.display = "block"; return; }
+      noResult.style.display = "none";
+
+      list.forEach(b => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const imgHTML = b.img
+          ? `<img src="${b.img}" alt="${b.titleEn}"
+              onload="this.classList.remove('broken')"
+              onerror="this.classList.add('broken')">`
+          : "";
+
+        /*
+         * 下載按鈕：使用 Google Drive 直接下載格式
+         * 把 Google Drive 分享連結中的 FILE_ID 填入 download 欄位即可：
+         *   https://drive.google.com/uc?export=download&id=FILE_ID
+         */
+        const dlBtn = b.download
+          ? `<a href="${b.download}" download class="card-btn card-btn-dl">⬇ Download · 下載</a>`
+          : `<button class="card-btn card-btn-dl" disabled style="opacity:.38;cursor:not-allowed">⬇ Coming Soon</button>`;
+
+        const ytBtn = b.youtube
+          ? `<a href="${b.youtube}" target="_blank" rel="noopener" class="card-btn card-btn-yt">▶ YouTube</a>`
+          : `<button class="card-btn card-btn-yt" disabled style="opacity:.38;cursor:not-allowed">▶ Video</button>`;
+
+        card.innerHTML = `
+      <div class="card-img-wrap">
+        ${imgHTML}
+        <span class="emoji-ph">${b.emoji}</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">${b.tag}</span>
+        <div class="card-title">${b.titleEn} · ${b.titleZh}</div>
+        <div class="card-desc">${b.descEn}<br><span style="color:var(--text-3)">${b.descZh}</span></div>
+        <div class="card-btns">${dlBtn}${ytBtn}</div>
+      </div>`;
+
+        const img = card.querySelector("img");
+        const emojiEl = card.querySelector(".emoji-ph");
+        if (img) {
+          img.addEventListener("load", () => { emojiEl.style.display = "none"; });
+          img.addEventListener("error", () => { emojiEl.style.display = ""; });
+        }
+        grid.appendChild(card);
+      });
+    }
+
+    /* ──────────────────────────────────────
+       導覽列 active 偵測（IntersectionObserver）
+    ────────────────────────────────────── */
+    const navLinkEls = document.querySelectorAll(".nav-links a");
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinkEls.forEach(a => a.classList.remove("active"));
+          const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add("active");
+        }
+      });
+    }, { rootMargin: `-${getComputedStyle(document.documentElement).getPropertyValue('--nav-h')} 0px -55% 0px` });
+
+    document.querySelectorAll("section[id]").forEach(s => sectionObserver.observe(s));
+
+    /* ──────────────────────────────────────
+       手機漢堡選單
+    ────────────────────────────────────── */
+    document.getElementById("navToggle").addEventListener("click", () => {
+      document.getElementById("navLinks").classList.toggle("open");
+    });
+
+    // 點選連結後關閉選單
+    navLinkEls.forEach(a => a.addEventListener("click", () => {
+      document.getElementById("navLinks").classList.remove("open");
+    }));
+
+    /* ──────────────────────────────────────
+       浮動回到頂部按鈕
+    ────────────────────────────────────── */
+    const floatBtn = document.getElementById("backToTopFloat");
+    window.addEventListener("scroll", () => {
+      floatBtn.classList.toggle("visible", window.scrollY > 500);
+    }, { passive: true });
+
+    /* ──────────────────────────────────────
+       Init
+    ────────────────────────────────────── */
+    renderGallery();
+    buildTagBar();
+    filterCards();
+  </script>
 </body>
+
 </html>
