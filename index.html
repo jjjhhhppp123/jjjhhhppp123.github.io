@@ -4,12 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MC Blueprint — Minecraft 建築藍圖下載站</title>
+  <title>米兔精緻風格建築</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Inter 正文字體 + Press Start 2P 像素字體（僅 Logo 使用） -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&family=Press+Start+2P&display=swap"
     rel="stylesheet" />
   <style>
     /* ═══════════════════════════════════════════
@@ -29,17 +28,17 @@
       --accent-dim: rgba(22, 163, 74, 0.10);
       --accent-ring: rgba(22, 163, 74, 0.22);
 
-      --bg: #fdfbf0;
-      --bg-surface: #f7f3e0;
-      --bg-elevated: #f0eacc;
-      --bg-nav: rgba(253, 251, 240, 0.90);
+      --bg: #ffffff;
+      --bg-surface: #f5f5f5;
+      --bg-elevated: #ebebeb;
+      --bg-nav: rgba(255, 255, 255, 0.92);
 
       --border: rgba(0, 0, 0, 0.08);
-      --border-hard: rgba(0, 0, 0, 0.14);
+      --border-hard: rgba(0, 0, 0, 0.13);
 
-      --text: #1a1a1a;
-      --text-2: #5a5a4a;
-      --text-3: #a09880;
+      --text: #333333;
+      --text-2: #666666;
+      --text-3: #999999;
 
       --red: #dc2626;
       --yellow-deep: #d97706;
@@ -59,8 +58,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Inter', 'Apple Color Emoji', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      font-family: 'Noto Sans TC', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
@@ -373,24 +371,20 @@
        各區塊漸層背景（每塊不同色調）
     ═══════════════════════════════════════════ */
 
-    /* Home：暖奶油 + 頂部綠輝 */
+    /* 各區塊背景 */
     #home {
-      background:
-        radial-gradient(ellipse 80% 55% at 50% -5%, rgba(22, 163, 74, 0.10) 0%, transparent 65%),
-        linear-gradient(175deg, #fefdf5 0%, #fdfbf0 55%, #f9f5e7 100%);
+      background: #ffffff;
     }
 
-    /* About（含作品預覽）：薄荷綠調 */
     #about {
-      background: linear-gradient(160deg, #edfbf1 0%, #f4faf5 35%, #fdfbf0 100%);
+      background: #f9f9f9;
     }
 
-    /* Download：暖琥珀調 */
     #download {
-      background: linear-gradient(160deg, #fffbeb 0%, #fef8e3 40%, #fdfbf0 100%);
+      background: #ffffff;
     }
 
-    /* Guide：深色保持不變（在 guide 區塊 CSS 處理） */
+    /* Guide：深色保持不變 */
 
     /* ─── 迷你作品預覽（在 About 內） ─── */
     .mini-gallery-wrap {
@@ -424,66 +418,80 @@
     }
 
     .mini-gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
-      background: var(--border-hard);
-      border: 1.5px solid var(--border-hard);
-      border-radius: var(--radius);
-      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
     }
 
     .mini-item {
-      aspect-ratio: 3 / 4;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--border-hard);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: box-shadow 0.2s, transform 0.18s;
+      text-decoration: none;
+    }
+
+    .mini-item:hover {
+      box-shadow: 0 4px 14px rgba(0,0,0,0.11);
+      transform: translateY(-1px);
+    }
+
+    .mini-img-side {
+      width: 110px;
+      height: 80px;
+      flex-shrink: 0;
+      overflow: hidden;
       background: var(--bg-elevated);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
+      font-size: 2rem;
     }
 
-    .mini-item img {
+    .mini-img-side img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.3s ease;
+      display: block;
+      transition: transform 0.3s;
     }
 
-    .mini-item:hover img {
-      transform: scale(1.08);
+    .mini-item:hover .mini-img-side img {
+      transform: scale(1.06);
     }
 
-    .mini-item img.broken {
+    .mini-img-side img.broken {
       display: none;
     }
 
-    .mini-caption {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, transparent 55%);
-      opacity: 0;
-      transition: opacity 0.22s;
-      display: flex;
-      align-items: flex-end;
-      padding: 0.5rem;
+    .mini-text-side {
+      flex: 1;
+      padding: 0.65rem 1rem;
     }
 
-    .mini-item:hover .mini-caption {
-      opacity: 1;
-    }
-
-    .mini-caption span {
-      font-size: 0.68rem;
+    .mini-title-en {
+      font-size: 0.88rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .mini-title-zh {
+      font-size: 0.78rem;
+      color: var(--text-2);
+      margin-top: 0.15rem;
     }
 
     @media (max-width: 680px) {
-      .mini-gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .mini-img-side {
+        width: 88px;
+        height: 68px;
       }
     }
 
@@ -558,22 +566,27 @@
     #cardGrid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border-hard);
-      border: 1.5px solid var(--border-hard);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
+      gap: 1.25rem;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
     }
 
     .card {
-      background: var(--bg-surface);
+      background: #fff;
+      border: 1px solid var(--border-hard);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
       display: flex;
       flex-direction: column;
-      transition: background 0.18s;
+      transition: box-shadow 0.2s, transform 0.18s;
     }
 
     .card:hover {
-      background: var(--bg-elevated);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
     }
 
     .card-img-wrap {
@@ -1113,6 +1126,7 @@
 
       #cardGrid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 0.85rem;
       }
 
       .gallery-grid {
@@ -1233,7 +1247,7 @@
   <nav id="mainNav">
     <div class="nav-logo">
       <span class="dot"></span>
-      MC Blueprint
+      MEETU 米兔精緻風格建築
     </div>
 
     <!-- 桌面 + 手機展開後的連結清單 -->
@@ -1269,20 +1283,20 @@
 
       <!-- 【可修改】主標題 -->
       <h1 class="hero-title">
-        Build Your<br><span>Dream World</span><br>
-        <span style="font-size:0.6em; color:var(--text-2); font-weight:700; letter-spacing:-0.02em;">打造你的夢想世界</span>
+        <span>米兔</span>精緻風格建築<br>
+        <span style="font-size:0.52em; color:var(--text-2); font-weight:600; letter-spacing:0em;">MEETU Refined Style Builds</span>
       </h1>
 
       <!-- 【可修改】副標題 -->
       <p class="hero-desc">
-        Download free .litematic blueprints and build stunning structures in minutes.<br>
-        下載免費 .litematic 藍圖，幾分鐘內蓋出精美建築。
+        Free .schem blueprints — download and paste in seconds with WorldEdit.<br>
+        免費 .schem 藍圖，使用 WorldEdit 幾秒內貼上精美建築。
       </p>
 
       <!-- CTA 按鈕 -->
       <div class="cta-group">
-        <a href="#download" class="btn btn-primary">⬇ Browse Downloads · 瀏覽下載</a>
-        <a href="#gallery" class="btn btn-outline">🖼 View Gallery · 查看作品集</a>
+        <a href="#download" class="btn btn-primary">Browse Downloads · 瀏覽下載</a>
+        <a href="#about" class="btn btn-outline">My Builds · 查看作品</a>
       </div>
     </div>
   </section>
@@ -1392,9 +1406,8 @@
           <span>Installation Guide · 安裝教學</span>
         </h2>
         <p class="gd-desc">
-          WorldEdit is the most popular building-assist mod for Minecraft — quickly load and paste blueprints with
-          .schem files.<br>
-          WorldEdit 是 Minecraft 最受歡迎的建築輔助模組，可以快速載入並貼上 .schem 藍圖檔案。
+          Load and paste blueprints in seconds. Install once, use forever.<br>
+          安裝一次，永久使用。幾秒內載入藍圖並貼上至任何位置。
         </p>
       </div>
 
@@ -1496,7 +1509,7 @@
       <!-- ── 官網按鈕 ── -->
       <div class="gd-footer">
         <a href="https://enginehub.org/worldedit" target="_blank" rel="noopener" class="gd-btn-main">
-          🌐 WorldEdit Official Site · 前往 WorldEdit 官網查看完整說明
+          WorldEdit Official Site · 前往 WorldEdit 官網查看完整說明
         </a>
       </div>
 
@@ -1601,26 +1614,24 @@
     ];
 
     /* ──────────────────────────────────────
-       Gallery 渲染（從 buildData 隨機抽 4 筆）
+       Gallery 渲染（從 buildData 隨機抽 4 筆，橫向卡片）
     ────────────────────────────────────── */
     function renderGallery() {
       const grid = document.getElementById("galleryGrid");
       const pick = [...buildData].sort(() => Math.random() - 0.5).slice(0, 4);
       grid.innerHTML = pick.map(g => `
-    <div class="mini-item">
-      ${g.img ? `<img src="${g.img}" alt="${g.titleEn}"
-                      onload="this.classList.remove('broken')"
-                      onerror="this.classList.add('broken')">` : ""}
-      <span>${g.emoji}</span>
-      <div class="mini-caption"><span>${g.titleEn} · ${g.titleZh}</span></div>
-    </div>`
+    <a class="mini-item" href="#download">
+      <div class="mini-img-side">
+        ${g.img
+          ? `<img src="${g.img}" alt="${g.titleEn}" onerror="this.classList.add('broken')">`
+          : `<span>${g.emoji}</span>`}
+      </div>
+      <div class="mini-text-side">
+        <div class="mini-title-en">${g.titleEn}</div>
+        <div class="mini-title-zh">${g.titleZh}</div>
+      </div>
+    </a>`
       ).join("");
-
-      grid.querySelectorAll(".mini-item img").forEach(img => {
-        const emojiSpan = img.nextElementSibling;
-        img.addEventListener("load", () => { if (emojiSpan) emojiSpan.style.display = "none"; });
-        img.addEventListener("error", () => { if (emojiSpan) emojiSpan.style.display = ""; });
-      });
     }
 
     /* ──────────────────────────────────────
@@ -1679,12 +1690,12 @@
          *   https://drive.google.com/uc?export=download&id=FILE_ID
          */
         const dlBtn = b.download
-          ? `<button class="card-btn card-btn-dl" onclick="openDlModal('${b.download}')">⬇ Download · 下載</button>`
-          : `<button class="card-btn card-btn-dl" disabled style="opacity:.38;cursor:not-allowed">⬇ Coming Soon</button>`;
+          ? `<button class="card-btn card-btn-dl" onclick="openDlModal('${b.download}')">Download · 下載</button>`
+          : `<button class="card-btn card-btn-dl" disabled style="opacity:.38;cursor:not-allowed">Coming Soon</button>`;
 
         const ytBtn = b.youtube
-          ? `<a href="${b.youtube}" target="_blank" rel="noopener" class="card-btn card-btn-yt">▶ YouTube</a>`
-          : `<button class="card-btn card-btn-yt" disabled style="opacity:.38;cursor:not-allowed">▶ Video</button>`;
+          ? `<a href="${b.youtube}" target="_blank" rel="noopener" class="card-btn card-btn-yt">YouTube</a>`
+          : `<button class="card-btn card-btn-yt" disabled style="opacity:.38;cursor:not-allowed">Video</button>`;
 
         card.innerHTML = `
       <div class="card-img-wrap">
@@ -1767,8 +1778,8 @@
         👇 <strong>Installation tutorial below · 安裝教學請查看下方 Guide 區塊</strong>
       </div>
       <div class="dl-modal-btns">
-        <a id="dlConfirmBtn" href="#" class="dl-modal-confirm" onclick="closeDlModal()">⬇ Download · 下載</a>
-        <button class="dl-modal-cancel" onclick="closeDlModal()">✕ Cancel · 取消</button>
+        <a id="dlConfirmBtn" href="#" class="dl-modal-confirm" onclick="closeDlModal()">Download · 下載</a>
+        <button class="dl-modal-cancel" onclick="closeDlModal()">Cancel · 取消</button>
       </div>
     </div>
   </div>
