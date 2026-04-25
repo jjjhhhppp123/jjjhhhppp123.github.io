@@ -431,14 +431,14 @@
       border: 1px solid var(--border-hard);
       border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
       cursor: pointer;
       transition: box-shadow 0.2s, transform 0.18s;
       text-decoration: none;
     }
 
     .mini-item:hover {
-      box-shadow: 0 4px 14px rgba(0,0,0,0.11);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.11);
       transform: translateY(-1px);
     }
 
@@ -1158,19 +1158,22 @@
         grid-template-columns: 1fr;
       }
     }
+
     /* ─── 下載確認彈窗 ─── */
     .dl-modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0, 0, 0, 0.45);
       z-index: 9999;
       align-items: center;
       justify-content: center;
     }
+
     .dl-modal-overlay.show {
       display: flex;
     }
+
     .dl-modal {
       background: var(--bg);
       border: 1.5px solid var(--border-hard);
@@ -1178,24 +1181,28 @@
       padding: 2rem 1.75rem 1.5rem;
       max-width: 420px;
       width: 90%;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
     }
+
     .dl-modal-icon {
       font-size: 2rem;
       margin-bottom: 0.6rem;
     }
+
     .dl-modal h3 {
       font-size: 1.05rem;
       font-weight: 700;
       margin-bottom: 0.75rem;
       line-height: 1.4;
     }
+
     .dl-modal p {
       font-size: 0.83rem;
       color: var(--text-2);
       line-height: 1.65;
       margin-bottom: 0.45rem;
     }
+
     .dl-modal .dl-hint {
       background: var(--bg-surface);
       border-left: 3px solid var(--accent);
@@ -1206,10 +1213,12 @@
       margin: 0.9rem 0 1.25rem;
       line-height: 1.6;
     }
+
     .dl-modal-btns {
       display: flex;
       gap: 0.6rem;
     }
+
     .dl-modal-btns a,
     .dl-modal-btns button {
       flex: 1;
@@ -1223,19 +1232,27 @@
       transition: opacity 0.15s;
       text-decoration: none;
     }
+
     .dl-modal-confirm {
       background: var(--accent);
       color: #fff;
       border-color: var(--accent);
       box-shadow: 0 2px 0 #0f7a35;
     }
-    .dl-modal-confirm:hover { opacity: 0.86; }
+
+    .dl-modal-confirm:hover {
+      opacity: 0.86;
+    }
+
     .dl-modal-cancel {
       background: transparent;
       color: var(--text-2);
       border-color: var(--border-hard);
     }
-    .dl-modal-cancel:hover { background: var(--bg-elevated); }
+
+    .dl-modal-cancel:hover {
+      background: var(--bg-elevated);
+    }
   </style>
 </head>
 
@@ -1284,7 +1301,8 @@
       <!-- 【可修改】主標題 -->
       <h1 class="hero-title">
         <span>米兔</span>精緻風格建築<br>
-        <span style="font-size:0.52em; color:var(--text-2); font-weight:600; letter-spacing:0em;">MEETU Refined Style Builds</span>
+        <span style="font-size:0.52em; color:var(--text-2); font-weight:600; letter-spacing:0em;">MEETU Refined Style
+          Builds</span>
       </h1>
 
       <!-- 【可修改】副標題 -->
@@ -1333,7 +1351,8 @@
           </p>
           <p>
             <!-- 【填入你的 YouTube 頻道連結】把 href="#" 換成你的頻道網址 -->
-            📺 YouTube：<a href="https://www.youtube.com/@MEETU1995" class="yt-link" target="_blank" rel="noopener">@MEETU1995</a>
+            📺 YouTube：<a href="https://www.youtube.com/@MEETU1995" class="yt-link" target="_blank"
+              rel="noopener">@MEETU1995</a>
           </p>
         </div>
       </div>
@@ -1374,7 +1393,9 @@
         點擊 ⬇ 直接下載，不會跳轉預覽頁。
       </p>
       <p style="font-size:0.83rem;color:var(--accent);font-weight:600;margin-top:-0.5rem;margin-bottom:1.25rem;">
-        📖 First time using blueprints? Check the <a href="#guide" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px;">WorldEdit installation guide below ↓</a><br>
+        📖 First time using blueprints? Check the <a href="#guide"
+          style="color:var(--accent);text-decoration:underline;text-underline-offset:3px;">WorldEdit installation guide
+          below ↓</a><br>
         第一次使用藍圖？請先查看下方 WorldEdit 模組安裝教學 ↓
       </p>
 
@@ -1564,7 +1585,7 @@
         img: "images/build_04.png",
         emoji: "🌾",
         download: "https://drive.google.com/uc?export=download&id=1uONDP-sylNO73-UeZl7C6v53n6ehWYXH",
-        youtube: "https://youtube.com/shorts/IfwfVSKSN_4?si=XwzkSJLBXrPM2aw4"
+        youtube: "https://youtube.com/shorts/ojdd7GVpDOk?si=9RxF2SPwymJqdwGA"
       },
 
       /* ── 卡片 2 ── */
@@ -1770,7 +1791,7 @@
       <div class="dl-modal-icon">⬇️</div>
       <h3>Download Blueprint · 下載藍圖</h3>
       <p>You are about to download a <strong>.schem</strong> blueprint file.<br>
-         即將下載 <strong>.schem</strong> 藍圖檔案。</p>
+        即將下載 <strong>.schem</strong> 藍圖檔案。</p>
       <div class="dl-hint">
         🔧 <strong>WorldEdit mod required · 需要安裝 WorldEdit 模組</strong><br>
         This blueprint requires <strong>WorldEdit</strong> to load and paste in-game.<br>
@@ -1792,10 +1813,10 @@
     function closeDlModal() {
       document.getElementById("dlModal").classList.remove("show");
     }
-    document.getElementById("dlModal").addEventListener("click", function(e) {
+    document.getElementById("dlModal").addEventListener("click", function (e) {
       if (e.target === this) closeDlModal();
     });
-    document.addEventListener("keydown", function(e) {
+    document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") closeDlModal();
     });
   </script>
