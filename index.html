@@ -1500,34 +1500,37 @@
         youtube: ""
       },
 
+      /* ── 卡片 4 ── */
+      {
+        id: 4,
+        titleEn: "Industrial Wood & Brick Building",
+        titleZh: "工業風木磚建築",
+        descEn: "Multi-story industrial loft with rooftop garden, glass facade, and warm ambient lighting.",
+        descZh: "多層工業風閣樓，附屋頂花園、玻璃外牆與暖色環境燈光。",
+        tag: "House · 住宅",
+        img: "images/build_04.png",
+        emoji: "🏭",
+        download: "",   /* 填入 Google Drive 直接下載連結 */
+        youtube: ""     /* 填入 YouTube 影片連結，例如 https://youtu.be/XXXXXX */
+      },
+
       /* ── 在這裡繼續新增卡片 ── */
 
     ];
 
-    /* ══════════════════════════════════════════
-       【如何新增作品集圖片】
-       galleryData 獨立於 buildData，
-       可以只放截圖，不需要下載連結。
-       ══════════════════════════════════════════ */
-    const galleryData = [
-      { img: "images/build_01.png", title: "Modern Wooden House · 現代木屋", emoji: "🏡" },
-      { img: "images/build_02.png", title: "Auto Wheat Farm · 全自動農場", emoji: "🌾" },
-      { img: "images/build_03.png", title: "Medieval Castle · 中世紀城堡", emoji: "🏰" },
-      /* 繼續新增：{ img: "images/xxx.png", title: "...", emoji: "..." }, */
-    ];
-
     /* ──────────────────────────────────────
-       Gallery 渲染
+       Gallery 渲染（從 buildData 隨機抽 3 筆）
     ────────────────────────────────────── */
     function renderGallery() {
       const grid = document.getElementById("galleryGrid");
-      grid.innerHTML = galleryData.map(g => `
+      const pick = [...buildData].sort(() => Math.random() - 0.5).slice(0, 3);
+      grid.innerHTML = pick.map(g => `
     <div class="mini-item">
-      ${g.img ? `<img src="${g.img}" alt="${g.title}"
+      ${g.img ? `<img src="${g.img}" alt="${g.titleEn}"
                       onload="this.classList.remove('broken')"
                       onerror="this.classList.add('broken')">` : ""}
       <span>${g.emoji}</span>
-      <div class="mini-caption"><span>${g.title}</span></div>
+      <div class="mini-caption"><span>${g.titleEn} · ${g.titleZh}</span></div>
     </div>`
       ).join("");
 
