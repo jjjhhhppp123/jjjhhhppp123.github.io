@@ -1144,6 +1144,84 @@
         grid-template-columns: 1fr;
       }
     }
+    /* ─── 下載確認彈窗 ─── */
+    .dl-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    .dl-modal-overlay.show {
+      display: flex;
+    }
+    .dl-modal {
+      background: var(--bg);
+      border: 1.5px solid var(--border-hard);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem 1.5rem;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+    }
+    .dl-modal-icon {
+      font-size: 2rem;
+      margin-bottom: 0.6rem;
+    }
+    .dl-modal h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+    }
+    .dl-modal p {
+      font-size: 0.83rem;
+      color: var(--text-2);
+      line-height: 1.65;
+      margin-bottom: 0.45rem;
+    }
+    .dl-modal .dl-hint {
+      background: var(--bg-surface);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 0.6rem 0.85rem;
+      font-size: 0.8rem;
+      color: var(--text-2);
+      margin: 0.9rem 0 1.25rem;
+      line-height: 1.6;
+    }
+    .dl-modal-btns {
+      display: flex;
+      gap: 0.6rem;
+    }
+    .dl-modal-btns a,
+    .dl-modal-btns button {
+      flex: 1;
+      padding: 0.55rem 0;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      border: 1.5px solid transparent;
+      transition: opacity 0.15s;
+      text-decoration: none;
+    }
+    .dl-modal-confirm {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 2px 0 #0f7a35;
+    }
+    .dl-modal-confirm:hover { opacity: 0.86; }
+    .dl-modal-cancel {
+      background: transparent;
+      color: var(--text-2);
+      border-color: var(--border-hard);
+    }
+    .dl-modal-cancel:hover { background: var(--bg-elevated); }
   </style>
 </head>
 
@@ -1458,49 +1536,7 @@
        ══════════════════════════════════════════ */
     const buildData = [
 
-      /* ── 卡片 1 ── */
-      {
-        id: 1,
-        titleEn: "Modern Wooden House",
-        titleZh: "現代木屋",
-        descEn: "Minimalist Nordic cabin — great for early survival. Includes basement storage.",
-        descZh: "簡約北歐風格木屋，適合生存初期。含地下室儲藏空間。",
-        tag: "House · 住宅",
-        img: "images/build_01.png",
-        emoji: "🏡",
-        download: "",   /* 填入 Google Drive 直接下載連結 */
-        youtube: ""
-      },
-
-      /* ── 卡片 2 ── */
-      {
-        id: 2,
-        titleEn: "Auto Wheat Farm",
-        titleZh: "全自動小麥農場",
-        descEn: "Fully automatic redstone harvester — one button collects all wheat.",
-        descZh: "紅石全自動收穫，一鍵即可收小麥，效率超高。",
-        tag: "Farm · 農場",
-        img: "images/build_02.png",
-        emoji: "🌾",
-        download: "",
-        youtube: ""
-      },
-
-      /* ── 卡片 3 ── */
-      {
-        id: 3,
-        titleEn: "Medieval Castle",
-        titleZh: "中世紀城堡",
-        descEn: "Large castle with moat and watchtowers — perfect for RPG servers.",
-        descZh: "附有護城河與箭樓的大型城堡，適合 RPG 伺服器。",
-        tag: "Castle · 城堡",
-        img: "images/build_03.png",
-        emoji: "🏰",
-        download: "",
-        youtube: ""
-      },
-
-      /* ── 卡片 4 ── */
+      /* ── 卡片 1（有下載，優先排第一） ── */
       {
         id: 4,
         titleEn: "Industrial Wood and Brick Building",
@@ -1514,16 +1550,58 @@
         youtube: "https://youtube.com/shorts/IfwfVSKSN_4?si=XwzkSJLBXrPM2aw4"
       },
 
+      /* ── 卡片 2 ── */
+      {
+        id: 1,
+        titleEn: "Modern Wooden House",
+        titleZh: "現代木屋",
+        descEn: "Minimalist Nordic cabin — great for early survival. Includes basement storage.",
+        descZh: "簡約北歐風格木屋，適合生存初期。含地下室儲藏空間。",
+        tag: "House · 住宅",
+        img: "images/build_01.png",
+        emoji: "🏡",
+        download: "",
+        youtube: ""
+      },
+
+      /* ── 卡片 3 ── */
+      {
+        id: 2,
+        titleEn: "Auto Wheat Farm",
+        titleZh: "全自動小麥農場",
+        descEn: "Fully automatic redstone harvester — one button collects all wheat.",
+        descZh: "紅石全自動收穫，一鍵即可收小麥，效率超高。",
+        tag: "Farm · 農場",
+        img: "images/build_02.png",
+        emoji: "🌾",
+        download: "",
+        youtube: ""
+      },
+
+      /* ── 卡片 4 ── */
+      {
+        id: 3,
+        titleEn: "Medieval Castle",
+        titleZh: "中世紀城堡",
+        descEn: "Large castle with moat and watchtowers — perfect for RPG servers.",
+        descZh: "附有護城河與箭樓的大型城堡，適合 RPG 伺服器。",
+        tag: "Castle · 城堡",
+        img: "images/build_03.png",
+        emoji: "🏰",
+        download: "",
+        youtube: ""
+      },
+
       /* ── 在這裡繼續新增卡片 ── */
 
     ];
 
     /* ──────────────────────────────────────
-       Gallery 渲染（從 buildData 隨機抽 3 筆）
+       Gallery 渲染（從 buildData 隨機抽 4 筆）
     ────────────────────────────────────── */
     function renderGallery() {
       const grid = document.getElementById("galleryGrid");
-      const pick = [...buildData].sort(() => Math.random() - 0.5).slice(0, 3);
+      const pick = [...buildData].sort(() => Math.random() - 0.5).slice(0, 4);
       grid.innerHTML = pick.map(g => `
     <div class="mini-item">
       ${g.img ? `<img src="${g.img}" alt="${g.titleEn}"
@@ -1597,7 +1675,7 @@
          *   https://drive.google.com/uc?export=download&id=FILE_ID
          */
         const dlBtn = b.download
-          ? `<a href="${b.download}" download class="card-btn card-btn-dl">⬇ Download · 下載</a>`
+          ? `<button class="card-btn card-btn-dl" onclick="openDlModal('${b.download}')">⬇ Download · 下載</button>`
           : `<button class="card-btn card-btn-dl" disabled style="opacity:.38;cursor:not-allowed">⬇ Coming Soon</button>`;
 
         const ytBtn = b.youtube
@@ -1669,6 +1747,42 @@
     renderGallery();
     buildTagBar();
     filterCards();
+  </script>
+
+  <!-- 下載確認彈窗 -->
+  <div class="dl-modal-overlay" id="dlModal">
+    <div class="dl-modal">
+      <div class="dl-modal-icon">⬇️</div>
+      <h3>Download Blueprint · 下載藍圖</h3>
+      <p>You are about to download a <strong>.litematic</strong> blueprint file.<br>
+         即將下載 <strong>.litematic</strong> 藍圖檔案。</p>
+      <div class="dl-hint">
+        📦 <strong>Mod required · 需要安裝模組</strong><br>
+        To use this blueprint, you need to install <strong>Litematica</strong> mod.<br>
+        使用藍圖前，請先安裝 <strong>Litematica</strong> 模組。<br><br>
+        👇 <strong>Installation tutorial · 安裝教學請查看下方 Guide 區塊</strong>
+      </div>
+      <div class="dl-modal-btns">
+        <a id="dlConfirmBtn" href="#" class="dl-modal-confirm">⬇ Download · 下載</a>
+        <button class="dl-modal-cancel" onclick="closeDlModal()">✕ Cancel · 取消</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openDlModal(url) {
+      document.getElementById("dlConfirmBtn").href = url;
+      document.getElementById("dlModal").classList.add("show");
+    }
+    function closeDlModal() {
+      document.getElementById("dlModal").classList.remove("show");
+    }
+    document.getElementById("dlModal").addEventListener("click", function(e) {
+      if (e.target === this) closeDlModal();
+    });
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") closeDlModal();
+    });
   </script>
 </body>
 
